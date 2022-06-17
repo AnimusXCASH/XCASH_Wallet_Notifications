@@ -26,10 +26,17 @@ Note: You can create virtual environment and install requirements afterwards
 ```bash
 pip3 install requirements.txt
 ``` 
-## Create  2 JSON File into main project directory
+## Create  2 JSON File into main project directory and get neccessary details
+
+### Discord notifications
+Make yourself a server and a channel, and obtain webhook link to be store in json file
+
+### Phone notifications
+Go to web page [Push Notifier](https://pushnotifier.de/), register yourself and new application. Once you get details, insert them to systemSettings.json file. 
 
 ### Script settings file 
 
+Make yourself a server, create a channel and get webhook address. 
 Name of file: systemSettings.json
 
 ```json
@@ -47,6 +54,7 @@ Name of file: systemSettings.json
   }
     
   ```
+ATTENTION: once you have chosen the platform set the "active" to true!
 
 ### Last processed block tracking
 
