@@ -76,12 +76,12 @@ class DepositMonitor():
 
 def start_deposit_monitor(timed_updater):
     scheduler = AsyncIOScheduler()
-    # scheduler.add_job(timed_updater.deposits,
-    #                   CronTrigger(minute='06, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56, 01'), misfire_grace_time=10,
-    #                   max_instances=20)
     scheduler.add_job(timed_updater.deposits,
-                    CronTrigger(second='00'), misfire_grace_time=10,
-                    max_instances=20)
+                      CronTrigger(minute='06, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56, 01'), misfire_grace_time=10,
+                      max_instances=20)
+    # scheduler.add_job(timed_updater.deposits,
+    #                 CronTrigger(second='00'), misfire_grace_time=10,
+    #                 max_instances=20)
 
     scheduler.start()
     print(Fore.LIGHTBLUE_EX + 'Deposit monitor...ACTIVATED')
