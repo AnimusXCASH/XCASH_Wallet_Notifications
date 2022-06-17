@@ -81,6 +81,10 @@ xcash-wallet-cli.exe --daemon-address 95.216.6.115:18281 --wallet-file NAME_OF_W
   python3 main.py
   ```
 
+# Other projects for XCASH
+- [x] [SHARED DELEGATE DISCORD BOT](https://github.com/AnimusXCASH/dpops_bot)
+- [x] X-Payment social payments system
+
 # Support 
 
 ## Github 
@@ -91,5 +95,4 @@ Open up a github ticket
 
 # Tip Jar
 - [x] Through X-Payment system on Discord to user `Animus#4608 (ID:360367188432912385)`
-
 - [x] XCASH Wallet Address: `XCA1d9H82oZP1ytt8ULMVFa6GNaX1RWHz8EFpwFNDgDbCEkzvZGP384Qfz6DJxjsmU2ernSQguqKgLDVkm1VteVT4ZiPJiSEVN`
