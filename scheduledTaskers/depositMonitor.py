@@ -58,9 +58,9 @@ class DepositMonitor():
 
             # Sending message on balance update
             balance = self.wallet_rpc.get_balance()
-            balance_message = f'New Wallet Balance after processing:\n{balance["result"]["balance"]/(10**6)} XCASH\nFiat: ${(t["amount"]/(10**6)* usd):,.6f}\n'
+            balance_message = f'New Wallet Balance after processing:\n{balance["result"]["balance"]/(10**6)} XCASH\nFiat: ${(balance["result"]["balance"]/(10**6))*usd:,.6f}\n'
             self.pagers.phone.phone_ping(text=balance_message)
-            self.pagers.discord.balance_status(text=f'```{balance["result"]["balance"]/(10**6):,.7f} XCASH\nFiat: ${(t["amount"]/(10**6)* usd):,.6f}\n```')
+            self.pagers.discord.balance_status(text=f'```{balance["result"]["balance"]/(10**6):,.7f} XCASH\nFiat: ${(balance["result"]["balance"]/(10**6))*usd:,.6f}\n```')
 
 
             highest_block = max([x["height"] for x in block_txs["result"]["in"] ])

@@ -14,10 +14,14 @@ if __name__ == "__main__":
 
     # Iitiate wallet RPC
     xcash_wallet_rpc = XcashWalletRpc(wallet_rpc_url = settings_file["rpcConnection"])
-
-    # Get the balance from wallet
-    balance = xcash_wallet_rpc.get_balance()
-    print(Fore.GREEN + f'Current Wallet Balance: {balance["result"]["balance"]/(10**6):,.7f} XCASH')
+    
+    try:
+        # Get the balance from wallet
+        balance = xcash_wallet_rpc.get_balance()
+        print(Fore.GREEN + f'Current Wallet Balance: {balance["result"]["balance"]/(10**6):,.7f} XCASH')
+    except Exception as e:
+        print(Fore.LIGHTRED_EX + f'It looks like script can not access Wallet. Please re-check your Wallet-RPC connection.')
+        raise
         
     # Activate notifiers
     notifiers = NotifiersManager(settings=settings_file)
@@ -33,5 +37,4 @@ if __name__ == "__main__":
         asyncio.get_event_loop().run_forever()
     except (KeyboardInterrupt, SystemExit):
         pass
-    # except Exception as e:
-    #     print(Fore.LIGHTRED_EX + f'It looks like script can not access Wallet. Please re-check your Wallet-RPC connection.')
+
