@@ -1,10 +1,11 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
-from pprint import pprint
-import json
 from datetime import datetime
 from colorama import init, Fore
 from tools.fileHandlers import read_last_checked_block_data, store_last_updated_block_height
+from pycoingecko import CoinGeckoAPI
+
+gecko = CoinGeckoAPI()
 
 init(autoreset=True)
 
@@ -14,6 +15,12 @@ class DepositMonitor():
         self.pagers = pagers
 
     async def deposits(self):
+        try:
+            usd = gecko.get_price(ids='x-cash', vs_currencies="usd")["x-cash"]["usd"]
+        except Exception as e:
+            print("Coingecko exception")
+            usd = 0
+
         print(Fore.LIGHTBLUE_EX + f"[DEP] @ {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}... CHECKING")
 
         # Getting last check block 
@@ -38,11 +45,12 @@ class DepositMonitor():
                                             f'Time: {datetime.fromtimestamp(t["timestamp"])}\n'
                                             f'Height: {t["height"]}\n'
                                             f'Amount: {t["amount"]/(10**6):,.7f} XCASH\n'
+                                            f'Fiat: ${(t["amount"]/(10**6)* usd):,.6f}\n'
                                             f'Payment ID: {t["payment_id"]}\n')
                 
                 # PushNotifier app
-                message = f'[XCASH-IN] @ {datetime.fromtimestamp(t["timestamp"])}\nAmount: {t["amount"]/(10**6):,.7f} XCASH\nPayment ID: {t["payment_id"]}'
-                message_disc = f'```Time: {datetime.fromtimestamp(t["timestamp"])}\nAmount: {t["amount"]/(10**6):,.7f} XCASH\nPayment ID: {t["payment_id"]}```'
+                message = f'[XCASH-IN] @ {datetime.fromtimestamp(t["timestamp"])}\nAmount: {t["amount"]/(10**6):,.7f} XCASH\nFiat: ${(t["amount"]/(10**6)* usd):,.6f}\nPayment ID: {t["payment_id"]}'
+                message_disc = f'```Time: {datetime.fromtimestamp(t["timestamp"])}\nAmount: {t["amount"]/(10**6):,.7f} XCASH\nFiat: ${(t["amount"]/(10**6)* usd):,.6f}\nPayment ID: {t["payment_id"]}```'
 
                 self.pagers.phone.phone_ping(text=message)
                 self.pagers.discord.deposit_processed(text=message_disc)
@@ -50,9 +58,9 @@ class DepositMonitor():
 
             # Sending message on balance update
             balance = self.wallet_rpc.get_balance()
-            balance_message = f'New Wallet Balance after processing:\n{balance["result"]["balance"]/(10**6)} XCASH'
+            balance_message = f'New Wallet Balance after processing:\n{balance["result"]["balance"]/(10**6)} XCASH\nFiat: ${(t["amount"]/(10**6)* usd):,.6f}\n'
             self.pagers.phone.phone_ping(text=balance_message)
-            self.pagers.discord.balance_status(text=f'```{balance["result"]["balance"]/(10**6):,.7f} XCASH```')
+            self.pagers.discord.balance_status(text=f'```{balance["result"]["balance"]/(10**6):,.7f} XCASH\nFiat: ${(t["amount"]/(10**6)* usd):,.6f}\n```')
 
 
             highest_block = max([x["height"] for x in block_txs["result"]["in"] ])

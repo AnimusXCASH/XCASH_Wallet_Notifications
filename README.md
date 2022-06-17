@@ -9,6 +9,8 @@ Integrated systems:
 [x] Discord Webhook system (Not a bot)
 [X] Push Notifiers to Android or Iphone through third party system (https://pushnotifier.de/)
 
+Covnersions:
+[x] USD Fiat conversions based on Coingecko
 
 # How to set-up
 
@@ -47,9 +49,11 @@ Name of file: systemSettings.json
   ```
 
 ### Last processed block tracking
+
+ATTENTION: Set to block 934795 to not spam the system 
   ```json
   {
-  "blockHeight":0
+  "blockHeight":934795
   }
   ```
 
